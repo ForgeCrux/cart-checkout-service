@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:33:33.240785079Z[GMT]")@Validated
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:37:09.209445517Z[GMT]")@Validated
 @Tag(name = "Carts", description = "Operations on shopping carts")
 public interface CartsApi {
 

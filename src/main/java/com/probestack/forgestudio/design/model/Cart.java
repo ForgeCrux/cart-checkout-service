@@ -21,7 +21,7 @@ import jakarta.annotation.Generated;
 /**
  * Cart
  */
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:33:33.240785079Z[GMT]")public class Cart {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:37:09.209445517Z[GMT]")public class Cart {
 
   private String id;
 
