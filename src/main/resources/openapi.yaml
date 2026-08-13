@@ -1,0 +1,527 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: cart@example.com
+    name: Storefront Team
+  description: |
+    Microservice for managing shopping carts and the checkout handoff.
+    Supports cart creation, line-item mutation, coupon application, and totals calculation.
+  title: Cart Checkout Service
+  version: 1.0.0
+servers:
+- description: Production
+  url: https://api.example.com/v1
+- description: Local development
+  url: http://localhost:8080/v1
+tags:
+- description: Operations on shopping carts
+  name: Carts
+paths:
+  /carts:
+    get:
+      description: "Returns a paginated list of carts, optionally filtered by customer\
+        \ or abandonment state."
+      operationId: listCarts
+      parameters:
+      - description: Filter by the owning customer
+        explode: true
+        in: query
+        name: customerId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter by cart lifecycle state
+        explode: true
+        in: query
+        name: state
+        required: false
+        schema:
+          enum:
+          - ACTIVE
+          - ABANDONED
+          - CONVERTED
+          - EXPIRED
+          type: string
+        style: form
+      - description: Page number (starts at 1)
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          minimum: 1
+          type: integer
+        style: form
+      - description: Number of items per page
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CartListResponse"
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid request - the server could not understand the payload
+            or parameters.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error - something went wrong on the server
+            side.
+      summary: List all carts
+      tags:
+      - Carts
+      x-accepts: application/json
+      x-tags:
+      - tag: Carts
+    post:
+      description: Creates an empty cart for a customer or guest session. A customer
+        may hold only one ACTIVE cart at a time.
+      operationId: createCart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCartRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+          description: Cart created successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid request - the server could not understand the payload
+            or parameters.
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: An active cart already exists for this customer
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error - something went wrong on the server
+            side.
+      summary: Create a new cart
+      tags:
+      - Carts
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Carts
+  /carts/{cartId}:
+    delete:
+      description: Removes all line items and releases any soft stock reservations.
+        The cart itself is retained.
+      operationId: emptyCart
+      parameters:
+      - description: Unique cart identifier (UUID)
+        explode: false
+        in: path
+        name: cartId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Cart emptied successfully (no content returned)
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: The requested resource was not found.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error - something went wrong on the server
+            side.
+      summary: Empty a cart
+      tags:
+      - Carts
+      x-accepts: application/json
+      x-tags:
+      - tag: Carts
+    get:
+      description: "Retrieves the cart with its line items, applied coupons, and calculated\
+        \ totals."
+      operationId: getCartById
+      parameters:
+      - description: Unique cart identifier (UUID)
+        explode: false
+        in: path
+        name: cartId
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+          description: Cart found
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Cart not found
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error - something went wrong on the server
+            side.
+      summary: Get a cart by ID
+      tags:
+      - Carts
+      x-accepts: application/json
+      x-tags:
+      - tag: Carts
+    put:
+      description: Replaces the full set of line items and coupons. The `customerId`
+        cannot be changed once set.
+      operationId: updateCart
+      parameters:
+      - description: Unique cart identifier (UUID)
+        explode: false
+        in: path
+        name: cartId
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCartRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+          description: Cart updated successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Invalid request - the server could not understand the payload
+            or parameters.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: The requested resource was not found.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: Internal server error - something went wrong on the server
+            side.
+      summary: Replace cart contents
+      tags:
+      - Carts
+      x-content-type: application/json
+      x-accepts: application/json
+      x-tags:
+      - tag: Carts
+components:
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Invalid request - the server could not understand the payload or
+        parameters.
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: The requested resource was not found.
+    InternalError:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+      description: Internal server error - something went wrong on the server side.
+  schemas:
+    Cart:
+      example:
+        couponCodes:
+        - SUMMER10
+        discountTotal: 9.0
+        grandTotal: 80.98
+        subtotal: 89.98
+        customerId: cust-88213
+        currency: USD
+        id: c1a2r3t4
+        sessionId: sess-9f8e7d
+        state: ACTIVE
+        items:
+        - unitPrice: 44.99
+          quantity: 2
+          sku: SKU-12345
+          productName: Wireless Mouse
+        - unitPrice: 44.99
+          quantity: 2
+          sku: SKU-12345
+          productName: Wireless Mouse
+        expiresAt: 2026-08-19T10:00:00Z
+        updatedAt: 2026-08-12T10:00:00Z
+      properties:
+        id:
+          description: Unique cart ID (UUID)
+          example: c1a2r3t4
+          type: string
+        customerId:
+          description: Null for guest carts
+          example: cust-88213
+          type: string
+        sessionId:
+          example: sess-9f8e7d
+          type: string
+        state:
+          enum:
+          - ACTIVE
+          - ABANDONED
+          - CONVERTED
+          - EXPIRED
+          example: ACTIVE
+          type: string
+        currency:
+          example: USD
+          type: string
+        items:
+          items:
+            $ref: "#/components/schemas/CartItem"
+          type: array
+        couponCodes:
+          example:
+          - SUMMER10
+          items:
+            type: string
+          type: array
+        subtotal:
+          example: 89.98
+          format: double
+          type: number
+        discountTotal:
+          example: 9.0
+          format: double
+          type: number
+        grandTotal:
+          example: 80.98
+          format: double
+          type: number
+        expiresAt:
+          example: 2026-08-19T10:00:00Z
+          format: date-time
+          type: string
+        updatedAt:
+          example: 2026-08-12T10:00:00Z
+          format: date-time
+          type: string
+      required:
+      - grandTotal
+      - id
+      - state
+      type: object
+    CartItem:
+      example:
+        unitPrice: 44.99
+        quantity: 2
+        sku: SKU-12345
+        productName: Wireless Mouse
+      properties:
+        sku:
+          example: SKU-12345
+          type: string
+        productName:
+          example: Wireless Mouse
+          type: string
+        quantity:
+          example: 2
+          minimum: 1
+          type: integer
+        unitPrice:
+          example: 44.99
+          format: double
+          type: number
+      required:
+      - quantity
+      - sku
+      type: object
+    CreateCartRequest:
+      example:
+        customerId: cust-88213
+        currency: USD
+        sessionId: sess-9f8e7d
+      properties:
+        customerId:
+          example: cust-88213
+          type: string
+        sessionId:
+          example: sess-9f8e7d
+          type: string
+        currency:
+          default: USD
+          example: USD
+          type: string
+      type: object
+    UpdateCartRequest:
+      example:
+        couponCodes:
+        - SUMMER10
+        - FREESHIP
+        items:
+        - unitPrice: 44.99
+          quantity: 2
+          sku: SKU-12345
+          productName: Wireless Mouse
+        - unitPrice: 44.99
+          quantity: 2
+          sku: SKU-12345
+          productName: Wireless Mouse
+      properties:
+        items:
+          items:
+            $ref: "#/components/schemas/CartItem"
+          type: array
+        couponCodes:
+          example:
+          - SUMMER10
+          - FREESHIP
+          items:
+            type: string
+          type: array
+      type: object
+    CartListResponse:
+      example:
+        size: 20
+        totalPages: 26
+        page: 1
+        content:
+        - couponCodes:
+          - SUMMER10
+          discountTotal: 9.0
+          grandTotal: 80.98
+          subtotal: 89.98
+          customerId: cust-88213
+          currency: USD
+          id: c1a2r3t4
+          sessionId: sess-9f8e7d
+          state: ACTIVE
+          items:
+          - unitPrice: 44.99
+            quantity: 2
+            sku: SKU-12345
+            productName: Wireless Mouse
+          - unitPrice: 44.99
+            quantity: 2
+            sku: SKU-12345
+            productName: Wireless Mouse
+          expiresAt: 2026-08-19T10:00:00Z
+          updatedAt: 2026-08-12T10:00:00Z
+        - couponCodes:
+          - SUMMER10
+          discountTotal: 9.0
+          grandTotal: 80.98
+          subtotal: 89.98
+          customerId: cust-88213
+          currency: USD
+          id: c1a2r3t4
+          sessionId: sess-9f8e7d
+          state: ACTIVE
+          items:
+          - unitPrice: 44.99
+            quantity: 2
+            sku: SKU-12345
+            productName: Wireless Mouse
+          - unitPrice: 44.99
+            quantity: 2
+            sku: SKU-12345
+            productName: Wireless Mouse
+          expiresAt: 2026-08-19T10:00:00Z
+          updatedAt: 2026-08-12T10:00:00Z
+        totalElements: 512
+      properties:
+        page:
+          example: 1
+          type: integer
+        size:
+          example: 20
+          type: integer
+        totalElements:
+          example: 512
+          type: integer
+        totalPages:
+          example: 26
+          type: integer
+        content:
+          items:
+            $ref: "#/components/schemas/Cart"
+          type: array
+      type: object
+    ErrorResponse:
+      properties:
+        status:
+          example: 400
+          type: integer
+        errorCode:
+          example: INVALID_QUANTITY
+          type: string
+        message:
+          example: "Validation failed: quantity must be at least 1"
+          type: string
+        timestamp:
+          example: 2026-08-12T10:00:00Z
+          format: date-time
+          type: string
+        path:
+          example: /v1/carts
+          type: string
+      required:
+      - message
+      - status
+      type: object
