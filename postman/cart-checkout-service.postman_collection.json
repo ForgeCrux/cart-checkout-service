@@ -1,0 +1,178 @@
+{
+  "info" : {
+    "name" : "cart-checkout-service Postman Collection",
+    "description" : "Microservice for managing shopping carts and the checkout handoff.\nSupports cart creation, line-item mutation, coupon application, and totals calculation.\n\n\nOpenAPI version: 1.0.0",
+    "schema" : "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth" : {
+    "type" : "bearer",
+    "bearer" : [ {
+      "key" : "token",
+      "value" : "{{accessToken}}",
+      "type" : "string"
+    } ]
+  },
+  "variable" : [ {
+    "key" : "baseUrl",
+    "value" : "https://api.example.com/v1",
+    "type" : "string",
+    "description" : "Override with the base URL of the deployed Apigee proxy."
+  }, {
+    "key" : "accessToken",
+    "value" : "",
+    "type" : "string"
+  }, {
+    "key" : "customerId",
+    "value" : "",
+    "type" : "string",
+    "description" : "Filter by the owning customer"
+  }, {
+    "key" : "state",
+    "value" : "",
+    "type" : "string",
+    "description" : "Filter by cart lifecycle state"
+  }, {
+    "key" : "page",
+    "value" : "",
+    "type" : "string",
+    "description" : "Page number (starts at 1)"
+  }, {
+    "key" : "size",
+    "value" : "",
+    "type" : "string",
+    "description" : "Number of items per page"
+  }, {
+    "key" : "cartId",
+    "value" : "",
+    "type" : "string",
+    "description" : "Unique cart identifier (UUID)"
+  } ],
+  "item" : [ {
+    "name" : "List all carts",
+    "request" : {
+      "method" : "GET",
+      "description" : "List all carts\n\nResponses:\n- 200: Successful response\n- 400: Invalid request - the server could not understand the payload or parameters.\n- 500: Internal server error - something went wrong on the server side.",
+      "header" : [ ],
+      "url" : {
+        "raw" : "{{baseUrl}}/carts?customerId={{customerId}}&state={{state}}&page={{page}}&size={{size}}",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "carts" ],
+        "query" : [ {
+          "key" : "customerId",
+          "value" : "{{customerId}}",
+          "disabled" : true,
+          "description" : "Filter by the owning customer"
+        }, {
+          "key" : "state",
+          "value" : "{{state}}",
+          "disabled" : true,
+          "description" : "Filter by cart lifecycle state"
+        }, {
+          "key" : "page",
+          "value" : "{{page}}",
+          "disabled" : true,
+          "description" : "Page number (starts at 1)"
+        }, {
+          "key" : "size",
+          "value" : "{{size}}",
+          "disabled" : true,
+          "description" : "Number of items per page"
+        } ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Create a new cart",
+    "request" : {
+      "method" : "POST",
+      "description" : "Create a new cart\n\nResponses:\n- 201: Cart created successfully\n- 400: Invalid request - the server could not understand the payload or parameters.\n- 409: An active cart already exists for this customer\n- 500: Internal server error - something went wrong on the server side.",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "type" : "text"
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{}",
+        "options" : {
+          "raw" : {
+            "language" : "json"
+          }
+        }
+      },
+      "url" : {
+        "raw" : "{{baseUrl}}/carts",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "carts" ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Get a cart by ID",
+    "request" : {
+      "method" : "GET",
+      "description" : "Get a cart by ID\n\nResponses:\n- 200: Cart found\n- 404: Cart not found\n- 500: Internal server error - something went wrong on the server side.",
+      "header" : [ ],
+      "url" : {
+        "raw" : "{{baseUrl}}/carts/:cartId",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "carts", ":cartId" ],
+        "variable" : [ {
+          "key" : "cartId",
+          "value" : "{{cartId}}",
+          "description" : "Unique cart identifier (UUID)"
+        } ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Replace cart contents",
+    "request" : {
+      "method" : "PUT",
+      "description" : "Replace cart contents\n\nResponses:\n- 200: Cart updated successfully\n- 400: Invalid request - the server could not understand the payload or parameters.\n- 404: The requested resource was not found.\n- 500: Internal server error - something went wrong on the server side.",
+      "header" : [ {
+        "key" : "Content-Type",
+        "value" : "application/json",
+        "type" : "text"
+      } ],
+      "body" : {
+        "mode" : "raw",
+        "raw" : "{}",
+        "options" : {
+          "raw" : {
+            "language" : "json"
+          }
+        }
+      },
+      "url" : {
+        "raw" : "{{baseUrl}}/carts/:cartId",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "carts", ":cartId" ],
+        "variable" : [ {
+          "key" : "cartId",
+          "value" : "{{cartId}}",
+          "description" : "Unique cart identifier (UUID)"
+        } ]
+      }
+    },
+    "response" : [ ]
+  }, {
+    "name" : "Empty a cart",
+    "request" : {
+      "method" : "DELETE",
+      "description" : "Empty a cart\n\nResponses:\n- 204: Cart emptied successfully (no content returned)\n- 404: The requested resource was not found.\n- 500: Internal server error - something went wrong on the server side.",
+      "header" : [ ],
+      "url" : {
+        "raw" : "{{baseUrl}}/carts/:cartId",
+        "host" : [ "{{baseUrl}}" ],
+        "path" : [ "carts", ":cartId" ],
+        "variable" : [ {
+          "key" : "cartId",
+          "value" : "{{cartId}}",
+          "description" : "Unique cart identifier (UUID)"
+        } ]
+      }
+    },
+    "response" : [ ]
+  } ]
+}
