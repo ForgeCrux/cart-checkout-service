@@ -1,0 +1,110 @@
+{
+  "microserviceId" : "6a7dfd66254dc050c69996c0",
+  "mocks" : [ {
+    "id" : "cdfbce95-2822-4360-8582-84e596fb5424",
+    "microserviceId" : "6a7dfd66254dc050c69996c0",
+    "specMetadataId" : "6a7dfd9be3a11656ce5356c6",
+    "apiSpecName" : "Cart Checkout Service",
+    "name" : "mock-cart-checkout-service",
+    "mockServiceName" : "mock-cart-checkout-service",
+    "mockServerUrl" : "https://forgesphere.probestack.io/mock-api/v1/api/mocks/mock-81ec0adc",
+    "responseLatencyMs" : 0,
+    "mockUrl" : "mock-81ec0adc",
+    "isPrivate" : true,
+    "delayMs" : 0,
+    "requestCount" : 5,
+    "createdAt" : "2026-08-13T17:23:53.006Z",
+    "updatedAt" : "2026-08-13T17:23:56.686Z",
+    "endpoints" : [ {
+      "id" : "76ba32d4-da14-42d9-8875-2576560a1938",
+      "mockId" : "cdfbce95-2822-4360-8582-84e596fb5424",
+      "path" : "/carts",
+      "method" : "GET",
+      "responseStatus" : 200,
+      "responseHeaders" : {
+        "Content-Type" : "application/json"
+      },
+      "responseBody" : "{\"page\":1,\"size\":20,\"totalElements\":512,\"totalPages\":26,\"content\":[{\"id\":\"c1a2r3t4\",\"customerId\":\"cust-88213\",\"sessionId\":\"sess-9f8e7d\",\"state\":\"ACTIVE\",\"currency\":\"USD\",\"items\":[{\"sku\":\"SKU-12345\",\"productName\":\"Wireless Mouse\",\"quantity\":2,\"unitPrice\":44.99}],\"couponCodes\":[\"SUMMER10\"],\"subtotal\":89.98,\"discountTotal\":9.0,\"grandTotal\":80.98,\"expiresAt\":\"2026-08-19T10:00:00Z\",\"updatedAt\":\"2026-08-12T10:00:00Z\"}]}",
+      "delayMs" : 0,
+      "isActive" : true,
+      "requestBodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true,
+      "createdAt" : "2026-08-13T17:23:53.044Z",
+      "updatedAt" : "2026-08-13T17:23:53.046Z"
+    }, {
+      "id" : "71ed5cbc-6fc1-46dd-975a-a757706ae60e",
+      "mockId" : "cdfbce95-2822-4360-8582-84e596fb5424",
+      "path" : "/carts",
+      "method" : "POST",
+      "responseStatus" : 201,
+      "responseHeaders" : {
+        "Content-Type" : "application/json"
+      },
+      "responseBody" : "{\"id\":\"c1a2r3t4\",\"customerId\":\"cust-88213\",\"sessionId\":\"sess-9f8e7d\",\"state\":\"ACTIVE\",\"currency\":\"USD\",\"items\":[{\"sku\":\"SKU-12345\",\"productName\":\"Wireless Mouse\",\"quantity\":2,\"unitPrice\":44.99}],\"couponCodes\":[\"SUMMER10\"],\"subtotal\":89.98,\"discountTotal\":9.0,\"grandTotal\":80.98,\"expiresAt\":\"2026-08-19T10:00:00Z\",\"updatedAt\":\"2026-08-12T10:00:00Z\"}",
+      "delayMs" : 0,
+      "isActive" : true,
+      "requestBodySample" : "{\"customerId\":\"cust-88213\",\"sessionId\":\"sess-9f8e7d\",\"currency\":\"USD\"}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true,
+      "createdAt" : "2026-08-13T17:23:53.055Z",
+      "updatedAt" : "2026-08-13T17:23:53.055Z"
+    }, {
+      "id" : "bcef1d9d-32e9-479b-8040-689c89b5de0e",
+      "mockId" : "cdfbce95-2822-4360-8582-84e596fb5424",
+      "path" : "/carts/{cartId}",
+      "method" : "DELETE",
+      "responseStatus" : 204,
+      "responseHeaders" : {
+        "Content-Type" : "application/json"
+      },
+      "responseBody" : "{}",
+      "delayMs" : 0,
+      "isActive" : true,
+      "requestBodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true,
+      "createdAt" : "2026-08-13T17:23:53.086Z",
+      "updatedAt" : "2026-08-13T17:23:53.086Z"
+    }, {
+      "id" : "2107f9ed-15ab-4aaa-8dd7-37a87ce4f07f",
+      "mockId" : "cdfbce95-2822-4360-8582-84e596fb5424",
+      "path" : "/carts/{cartId}",
+      "method" : "GET",
+      "responseStatus" : 200,
+      "responseHeaders" : {
+        "Content-Type" : "application/json"
+      },
+      "responseBody" : "{\"id\":\"c1a2r3t4\",\"customerId\":\"cust-88213\",\"sessionId\":\"sess-9f8e7d\",\"state\":\"ACTIVE\",\"currency\":\"USD\",\"items\":[{\"sku\":\"SKU-12345\",\"productName\":\"Wireless Mouse\",\"quantity\":2,\"unitPrice\":44.99}],\"couponCodes\":[\"SUMMER10\"],\"subtotal\":89.98,\"discountTotal\":9.0,\"grandTotal\":80.98,\"expiresAt\":\"2026-08-19T10:00:00Z\",\"updatedAt\":\"2026-08-12T10:00:00Z\"}",
+      "delayMs" : 0,
+      "isActive" : true,
+      "requestBodySample" : null,
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true,
+      "createdAt" : "2026-08-13T17:23:53.066Z",
+      "updatedAt" : "2026-08-13T17:23:53.066Z"
+    }, {
+      "id" : "776bbe73-4ecb-49a8-95ad-49b32c1022f7",
+      "mockId" : "cdfbce95-2822-4360-8582-84e596fb5424",
+      "path" : "/carts/{cartId}",
+      "method" : "PUT",
+      "responseStatus" : 200,
+      "responseHeaders" : {
+        "Content-Type" : "application/json"
+      },
+      "responseBody" : "{\"id\":\"c1a2r3t4\",\"customerId\":\"cust-88213\",\"sessionId\":\"sess-9f8e7d\",\"state\":\"ACTIVE\",\"currency\":\"USD\",\"items\":[{\"sku\":\"SKU-12345\",\"productName\":\"Wireless Mouse\",\"quantity\":2,\"unitPrice\":44.99}],\"couponCodes\":[\"SUMMER10\"],\"subtotal\":89.98,\"discountTotal\":9.0,\"grandTotal\":80.98,\"expiresAt\":\"2026-08-19T10:00:00Z\",\"updatedAt\":\"2026-08-12T10:00:00Z\"}",
+      "delayMs" : 0,
+      "isActive" : true,
+      "requestBodySample" : "{\"items\":[{\"sku\":\"SKU-12345\",\"productName\":\"Wireless Mouse\",\"quantity\":2,\"unitPrice\":44.99}],\"couponCodes\":[\"SUMMER10\",\"FREESHIP\"]}",
+      "validationMode" : "NONE",
+      "validationSchema" : null,
+      "validateMethod" : true,
+      "createdAt" : "2026-08-13T17:23:53.074Z",
+      "updatedAt" : "2026-08-13T17:23:53.074Z"
+    } ]
+  } ]
+}
