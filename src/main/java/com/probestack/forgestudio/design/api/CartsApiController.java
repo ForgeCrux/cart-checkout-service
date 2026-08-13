@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.probestack.forgestudio.design.service.CartsService;
 import com.probestack.forgestudio.design.validation.GeneratedRequestValidator;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:33:33.240785079Z[GMT]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:37:09.209445517Z[GMT]")
 @Controller
 @RequestMapping("${openapi.cartCheckoutService.base-path:/v1}")
 public class CartsApiController implements CartsApi {

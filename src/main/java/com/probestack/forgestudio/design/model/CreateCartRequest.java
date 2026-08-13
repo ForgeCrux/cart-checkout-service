@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 /**
  * CreateCartRequest
  */
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:33:33.240785079Z[GMT]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:37:09.209445517Z[GMT]")
 @Document(collection = "cart_checkout_service_carts")
 public class CreateCartRequest {
 
