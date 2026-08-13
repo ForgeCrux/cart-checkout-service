@@ -12,7 +12,7 @@ import jakarta.annotation.Generated;
 /**
  * CartItem
  */
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:33:33.240785079Z[GMT]")public class CartItem {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-13T10:37:09.209445517Z[GMT]")public class CartItem {
 
   private String sku;
 
